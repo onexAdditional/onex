@@ -116,7 +116,12 @@ Command executed in 0.001114s
 Best Match is timeseries 7 starting at 8 with length 11. Distance = 0.3933
 ```
 
-## Attribution
+## Contributors
+
+ONEX was implemented by Cuong Nguyen, Charles Lovering, Ramoza Ahsan, and Michael Andrews.
+Other contributors include Rodica Neamtu, and Samantha Swartz.
+
+## Acknowledgement
 The ONEX codebase includes the trillionDTW[0] methods, uses the same pruning
 methods, and even uses the trillion implementation of lemire lower/upper
 bound.
