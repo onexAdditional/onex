@@ -1,0 +1,52 @@
+# Ignore big datasets
+datasets/big/
+datasets/local/
+datasets/UCR/
+
+# Ignore build file contents
+build/*
+
+# Cmake output
+CMakeFiles
+Makefile
+CTestTestfile.cmake
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# os
+.DS_STORE
+.swp*
+.vscode
+
+# Backups
+~$*
+backup/
+results/
