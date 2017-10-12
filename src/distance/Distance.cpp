@@ -91,8 +91,12 @@ data_t warpedDistance(const TimeSeries& a, const TimeSeries& b, data_t dropout)
   for(int i = 1; i < m; i++)
   {
     data_t bestSoFar = INF;
-    for(int j = max(i - r, 1); j <= min(i + r, n - 1); j++)
+    for(int j = max(i - r, 0); j <= min(i + r, n - 1); j++)
     {
+      if (j == 0) {
+        bestSoFar = min(bestSoFar, cost[i][j]);
+        continue;
+      }
       data_t ij1  = (i - r <= j-1 && j-1 <= i + r) ? cost[i][j-1] : INF;
       data_t i1j1 = cost[i-1][j-1];
       data_t i1j  = (j - r <= i-1 && i-1 <= j + r) ? cost[i-1][j] : INF;
