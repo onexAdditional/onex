@@ -261,7 +261,7 @@ MAKE_COMMAND(GroupDataset,
   "Group a dataset in memory",
 
   "Usage: group <dataset_index> <threshold>                       \n"
-  "  dataset_index   - Index of the dataset being unloaded. Use   \n"
+  "  dataset_index   - Index of the dataset being grouped. Use    \n"
   "                    'list dataset' to retrieve the list of     \n"
   "                    loaded datasets.                           \n"
   "  threshold       - Threshold for grouping.                    \n"
@@ -309,12 +309,12 @@ MAKE_COMMAND(LoadGroup,
 
   "Load saved groups to a compatible dataset",
 
-  "A dataset is compatible with a saved group file is when the item     \n"
-  "count and item length is the same.                                   \n"
-  "                                                                     \n"
-  "Usage: loadGroup <dataset_index> <path>                              \n"
-  "  dataset_index   - Index of the dataset whose groups will be saved. \n"
-  "  path            - Where to save the groups.                        \n"
+  "A dataset is compatible with a saved group file is when the item      \n"
+  "count and item length is the same.                                    \n"
+  "                                                                      \n"
+  "Usage: loadGroup <dataset_index> <path>                               \n"
+  "  dataset_index   - Index of the dataset whose groups will be loaded. \n"
+  "  path            - Where to save the groups.                         \n"
   )
 
 MAKE_COMMAND(NormalizeDataset,
