@@ -4,9 +4,11 @@
 #include "config.hpp"
 #include <string>
 #include <limits>
+#include <cmath>
 #include <iostream>
 
 #define INF std::numeric_limits<data_t>::infinity()
+#define EPS 1e-12
 
 namespace onex {
 
@@ -78,26 +80,30 @@ public:
   }
 
   /**
-   * @brief Copy assignment operator and copy constructor
+   * @brief Copy constructor
    */
-  TimeSeries& operator=(const TimeSeries& other) = default;
-  TimeSeries& operator=(TimeSeries& other) = default;  
-  TimeSeries(const TimeSeries& other) = default;
-
-  /**
-   *  @brief Move constructor
-   */
-  TimeSeries& operator=(TimeSeries&& other)
+  TimeSeries(const TimeSeries& other)
   {
-    data = other.data;
+    isOwnerOfData = other.isOwnerOfData;
     index = other.index;
     start = other.start;
     end = other.end;
     length = other.length;
-    isOwnerOfData = other.isOwnerOfData;
-    other.data = nullptr;
-    return *this;
+    if (isOwnerOfData)
+    {
+      this->data = new data_t[length];
+      memcpy(this->data, other.data, length * sizeof(data_t));
+    }
+    else {
+      this->data = other.data;
+    }
   }
+
+  /**
+   *  @brief Copy assignment and move assignment
+   */
+  TimeSeries& operator=(const TimeSeries& other);
+  TimeSeries& operator=(TimeSeries&& other);
 
   /**
    *  @brief destructor
@@ -136,28 +142,36 @@ public:
   int getLength() const { return this->length; }
 
   /**
-   *  @brief gets the index of the data - used for displaying information via the api
+   *  @brief gets the index of the data
    *
    *  @return the index of the data from its timeseries
    */
   int getIndex() const { return this->index; }
 
   /**
-   *  @brief gets the start of the data - used for displaying information via the api
+   *  @brief gets the start of the data
    *
    *  @return the start of the data from its timeseries
    */
   int getStart() const { return this->start; }
 
+  /**
+   *  @brief gets the end of the data
+   *
+   *  @return the end of the data from its timeseries
+   */
+  int getEnd() const { return this->end; }
+
   const data_t* getKeoghLower(int warpingBand) const;
   const data_t* getKeoghUpper(int warpingBand) const;
 
   const data_t* getData() const;
+  std::string getIdentifierString() const;
   void printData(std::ostream &out = std::cout) const;
 
 private:
 
-  data_t* data;
+  data_t* data = nullptr;
   bool isOwnerOfData;
   int index;
   int start;
@@ -165,8 +179,8 @@ private:
   int length;
 
   mutable bool keoghCacheValid = false;
-  mutable data_t* keoghLower = NULL;
-  mutable data_t* keoghUpper = NULL;
+  mutable data_t* keoghLower = nullptr;
+  mutable data_t* keoghUpper = nullptr;
   mutable double cachedWarpingBand;
 
   /**
@@ -188,7 +202,19 @@ struct candidate_time_series_t
 
   bool operator<(const candidate_time_series_t& rhs) const 
   {
-      return dist < rhs.dist;
+    if (abs(dist - rhs.dist) < EPS)
+    {
+      if (data.getIndex() == rhs.data.getIndex())
+      {
+        if (data.getStart() == rhs.data.getStart())
+        {
+          return data.getLength() < rhs.data.getLength();
+        }
+        return data.getStart() < rhs.data.getStart();
+      }
+      return data.getIndex() < rhs.data.getIndex();
+    }
+    return dist < rhs.dist;
   }
   candidate_time_series_t(const TimeSeries& data, data_t dist) : data(data), dist(dist) {};
   candidate_time_series_t() : data(0), dist(0) {}  

@@ -5,11 +5,45 @@
 
 #include <algorithm>
 #include <iostream>
+#include <sstream>
 #include <iomanip>
 #include <limits>
 
 namespace onex {
 
+
+TimeSeries& TimeSeries::operator=(const TimeSeries& other)
+{
+  if (isOwnerOfData) {
+    delete[] this->data;
+  }
+  isOwnerOfData = other.isOwnerOfData;
+  index = other.index;
+  start = other.start;
+  end = other.end;
+  length = other.length;
+  if (other.isOwnerOfData)
+  {
+    this->data = new data_t[length];
+    memcpy(this->data, other.data, length * sizeof(data_t));
+  }
+  else {
+    this->data = other.data;
+  }
+  return *this;
+}
+
+TimeSeries& TimeSeries::operator=(TimeSeries&& other)
+{
+  data = other.data;
+  index = other.index;
+  start = other.start;
+  end = other.end;
+  length = other.length;
+  isOwnerOfData = other.isOwnerOfData;
+  other.data = nullptr;
+  return *this;
+}
 
 TimeSeries::~TimeSeries()
 {
@@ -19,6 +53,10 @@ TimeSeries::~TimeSeries()
     delete this->data;
     this->data = nullptr;
   }
+  delete[] keoghLower;
+  keoghLower = nullptr;
+  delete[] keoghUpper;
+  keoghUpper = nullptr;
 }
 
 data_t& TimeSeries::operator[](int idx) const
@@ -64,7 +102,9 @@ const data_t* TimeSeries::getKeoghUpper(int warpingBand) const
 void TimeSeries::generateKeoghLU(int warpingBand) const
 {
   delete[] keoghLower;
+  keoghLower = nullptr;
   delete[] keoghUpper;
+  keoghUpper = nullptr;
 
   keoghLower = new data_t[this->length];
   keoghUpper = new data_t[this->length];
@@ -81,6 +121,13 @@ void TimeSeries::generateKeoghLU(int warpingBand) const
 const data_t* TimeSeries::getData() const
 {
   return this->data;
+}
+
+string TimeSeries::getIdentifierString() const
+{
+  std::ostringstream os;
+  os << this->index << " [" << this->start << ", " << this->end << "]";
+  return os.str();
 }
 
 void TimeSeries::printData(std::ostream &out) const

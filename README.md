@@ -61,6 +61,7 @@ A binary named 'onex' will be produced in the build directory. To run it, use:
 Use 'help' to see the details documentation of all commands.
 
 ## Dataset format
+
 An acceptable dataset file contains a list of time series of equal length. Each data point of the time series can be separated by any character (space is used by default) as this can be set by using the 'separators' parameter of the 'load' command.
 
 Values of the time series must be in the range of [0, 1]. A loaded dataset can be normalized to this range by using the 'normalize' command.
@@ -122,6 +123,7 @@ ONEX was implemented by Cuong Nguyen, Charles Lovering, Ramoza Ahsan, and Michae
 Other contributors include Rodica Neamtu, and Samantha Swartz.
 
 ## Acknowledgement
+
 The ONEX codebase includes the trillionDTW[0] methods, uses the same pruning
 methods, and even uses the trillion implementation of lemire lower/upper
 bound.
