@@ -5,6 +5,7 @@
 #include <string>
 #include <limits>
 #include <cmath>
+#include <cstring>
 #include <iostream>
 
 #define INF std::numeric_limits<data_t>::infinity()
