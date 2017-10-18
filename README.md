@@ -15,7 +15,7 @@
 ```bash
   sudo apt-get install cmake
   sudo apt-get install boost
-  sudo apt-get install readline
+  sudo apt-get install libreadline6 libreadline6-dev
 ```
 
 ### Windows:
