@@ -129,7 +129,7 @@ void TimeSeriesSet::loadData(const string& filePath, int maxNumRow,
         {
           try
           {
-            data[row * length + (col - startCol)] = (data_t)std::stod(*tok_iter);
+            data[row * (length - startCol) + (col - startCol)] = (data_t)std::stod(*tok_iter);
           }
           catch (const std::invalid_argument& e)
           {
